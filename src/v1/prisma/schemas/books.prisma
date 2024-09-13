@@ -1,0 +1,6 @@
+model books {
+  id          String   @id @default(cuid())
+  title       String
+  releaseDate DateTime
+  coverImage  Bytes
+}

@@ -1,0 +1,9 @@
+model concerts {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  coverImage  String
+  lastUpdated DateTime @default(now())
+}

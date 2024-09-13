@@ -1,0 +1,20 @@
+model album {
+  id                  String   @id @default(cuid())
+  title               String
+  description         String
+  frontCoverWithLabel Bytes
+  jacket              Bytes
+  backCover           Bytes
+  releaseDate         DateTime
+
+  tracks tracks[]
+}
+
+model tracks {
+  id      String @id @default(cuid())
+  title   String
+  number  String
+  albumId String
+
+  album album @relation(fields: [albumId], references: [id])
+}

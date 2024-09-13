@@ -1,0 +1,7 @@
+model biography {
+  id          Int      @id @default(autoincrement())
+  header      String
+  paragraph   String
+  footer      String
+  lastUpdated DateTime @default(now())
+}

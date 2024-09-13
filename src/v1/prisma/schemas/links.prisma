@@ -1,0 +1,7 @@
+model links {
+  id          String   @id @default(cuid())
+  title       String
+  icon        Bytes
+  url         String
+  lastUpdated DateTime @default(now())
+}

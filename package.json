@@ -1,0 +1,27 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "prisma:migrate": "npx prisma migrate dev --schema src/v1/prisma/schemas",
+    "prisma:studio": "npx prisma studio --schema src/v1/prisma/schemas"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.19.1",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.7.0",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.1"
+  }
+}

@@ -1,0 +1,6 @@
+model clips {
+  id          String   @id @default(cuid())
+  title       String
+  url         String
+  lastUpdated DateTime @default(now())
+}
