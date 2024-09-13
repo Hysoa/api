@@ -3,7 +3,7 @@ const stripe = require("stripe")(
 );
 const Nextcloud = require("../../classes/Nextcloud");
 
-const YOUR_DOMAIN = "http://localhost:5173/shop";
+const url = `${process.env.DOMAIN_URL}/shop`;
 
 const prices = {
   ["Sleep Well"] : "price_1PyaJVB4vjA2VhbORbp9Jl0O",
@@ -30,8 +30,8 @@ class Checkout {
           },
         ],
         mode: "payment",
-        success_url: `${YOUR_DOMAIN}?success=true&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+        success_url: `${url}?success=true&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${url}?canceled=true`,
       });
 
       response.redirect(303, session.url);
