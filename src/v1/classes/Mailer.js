@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const ErrorHandler = require("./errorHandler");
+const ErrorHandler = require("./ErrorHandler");
 
 class ErrorNodeMailService extends ErrorHandler {
   constructor (error) {
@@ -34,13 +34,14 @@ class Mailer {
       },
     });
 
-    const error = this.verify()
+    const error = this.#verify();
+    console.log('error', error);
     if (error) {
       throw error;
     }
   }
 
-  verify = () => {
+  #verify = () => {
     try {
       this.node.verify((error) => {
         if (error) {

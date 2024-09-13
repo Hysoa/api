@@ -1,4 +1,4 @@
-const Mailer = require("../../classes");
+const Mailer = require("../../classes/Mailer");
 
 /**
  * @description Contacts Class
@@ -14,8 +14,8 @@ class Contacts {
   async sendMessage(request, response, next) {
     try {
       const { name, email, subject, message } = request.body;
-      const error = Mailer.send(name, email, subject, message);
 
+      const error = Mailer.send(name, email, subject, message);
       if (error) {
         throw error;
       }
