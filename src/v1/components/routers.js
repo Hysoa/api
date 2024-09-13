@@ -10,5 +10,6 @@ router.get("/", (_, response) => {
 });
 
 router.use('/contact', require('./contact'))
+router.use('/checkout', require('./checkout'))
 
 module.exports = router;
