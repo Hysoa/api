@@ -10,9 +10,10 @@ const components = require("./components");
 router.get("/api/v1", (_, response) => {
   response.status(200).json({
     message: "Bienvenue sur Hysoa Music API (v1)",
-    endpoints: [
-      { POST: "/api/v1/contact" },
-    ],
+    endpoints: {
+      contact: "/api/v1/contact",
+      checkout: "/api/v1/checkout",
+    },
   });
 });
 

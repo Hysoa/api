@@ -5,6 +5,7 @@ router.get("/", (_, response) => {
   response.status(200).json({
     endpoints: [
       '/api/v1/contact',
+      '/api/v1/checkout',
     ],
   });
 });
