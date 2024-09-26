@@ -243,15 +243,15 @@ const allowed_countries = [
 ];
 const shipping_rates = {
   france: [
-    "shr_1Q0m4zB4vjA2VhbOgjBzhh0D",
-    "shr_1Q0m5zB4vjA2VhbOLiHe5Rkg",
-    "shr_1Q0m6XB4vjA2VhbOuglatixH",
+    "shr_1Q3JO1RvDBdfTs45025RcVnm",
+    "shr_1Q3JOZRvDBdfTs45T02bzf8q",
+    "shr_1Q3JPJRvDBdfTs45o5H48lPu",
   ],
   international: [
-    "shr_1Q0m73B4vjA2VhbOEZvN7GCJ",
-    "shr_1Q0m7SB4vjA2VhbOvxCUVlVG",
-    "shr_1Q0m8SB4vjA2VhbO4khZ2A5F",
-    "shr_1Q0m9MB4vjA2VhbO6D2YzMwi",
+    "shr_1Q3JevRvDBdfTs45ybU6jmwX",
+    "shr_1Q3JfIRvDBdfTs454GXBHCDN",
+    "shr_1Q3JfqRvDBdfTs45CCCCGMZ3",
+    "shr_1Q3JgFRvDBdfTs45ZyCSS2XL",
   ],
 };
 
@@ -262,12 +262,13 @@ class Checkout {
   async createSession(request, response, next) {
     try {
       const { album, purshaseType } = request.body;
-      const products = await stripe.products.list();
-      const albumProduct = products.data.find((product) => {
-        return (
-          product.name.toLowerCase() === album.toLowerCase() && product.active
-        );
-      });
+      const albumProduct = (
+        await stripe.products.search({
+          query: `metadata['slug']:'${album}-${
+            purshaseType.match("shipping") !== null ? "shipping" : "digital"
+          }'`,
+        })
+      ).data[0];
       if (!albumProduct) {
         throw new Error("Invalid album");
       }
@@ -315,23 +316,42 @@ class Checkout {
     const { sessionId } = request.params;
     const { id, payment_status, status, shipping_address_collection } =
       await stripe.checkout.sessions.retrieve(sessionId);
-    if (
-      payment_status === "paid" &&
-      status === "complete" &&
-      shipping_address_collection === null
-    ) {
-      const lineItems = await stripe.checkout.sessions.listLineItems(id);
-      const productId = lineItems.data[0].price.product;
-      const product = await stripe.products.retrieve(productId);
 
-      const nextcloud = new Nextcloud();
-      const sharedLink = await nextcloud.shareLink(
-        `/Albums/${product.name}.zip`
-      );
+    if (payment_status === "paid" && status === "complete") {
+      if (shipping_address_collection === null) {
+        try {
+          const lineItems = await stripe.checkout.sessions.listLineItems(id);
+          const nextcloud = new Nextcloud();
 
-      response.json({
-        sharedLink: `${sharedLink}/download/${product.name}.zip`,
-      });
+          const downloadAlbums = []
+          for (const lineItem of lineItems.data) {
+            const productId = lineItem.price.product;
+            const product = await stripe.products.retrieve(productId);
+            const albumName = product.name.split("(")[0].trim()
+            const sharedLink = await nextcloud.shareLink(
+              `/Albums/${albumName}.zip`
+            );
+            downloadAlbums.push({
+              name: albumName,
+              link: `${sharedLink}/download`
+            });
+          }
+
+          response.json({
+            purshaseType: "digital",
+            downloadAlbums
+          });
+        } catch (error) {
+          response.json({
+            purshaseType: "digital",
+          });
+        }
+
+      } else {
+        response.json({
+          purshaseType: "shipping",
+        });
+      }
     }
   }
 }
