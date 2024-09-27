@@ -284,7 +284,7 @@ class Checkout {
         allow_promotion_codes: true,
 
         success_url: `${url}?success=true&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${url}?canceled=true`,
+        cancel_url: `${url}?canceled=true&album=${album}`,
       };
 
       if (purshaseType !== "digital") {
