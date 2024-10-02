@@ -243,15 +243,15 @@ const allowed_countries = [
 ];
 const shipping_rates = {
   france: [
-    "shr_1Q3JO1RvDBdfTs45025RcVnm",
-    "shr_1Q3JOZRvDBdfTs45T02bzf8q",
-    "shr_1Q3JPJRvDBdfTs45o5H48lPu",
+    "shr_1Q3qGWRvDBdfTs45TbaG8ghV",
+    "shr_1Q3qGURvDBdfTs45As2ylZHc",
+    "shr_1Q3qGTRvDBdfTs45NemJYXAH",
   ],
   international: [
-    "shr_1Q3JevRvDBdfTs45ybU6jmwX",
-    "shr_1Q3JfIRvDBdfTs454GXBHCDN",
-    "shr_1Q3JfqRvDBdfTs45CCCCGMZ3",
-    "shr_1Q3JgFRvDBdfTs45ZyCSS2XL",
+    "shr_1Q3qGRRvDBdfTs45b2ZHjDvn",
+    "shr_1Q5Ws2RvDBdfTs45DmxRPZwX",
+    "shr_1Q3qGGRvDBdfTs45tLR9Zh1J",
+    "shr_1Q3qGARvDBdfTs45klm7Hnlo",
   ],
 };
 
@@ -306,9 +306,11 @@ class Checkout {
         }
       }
 
+
       const checkoutSession = await stripe.checkout.sessions.create(session);
       response.status(200).json({ url: checkoutSession.url });
     } catch (error) {
+      console.log('error', error)
       next(error);
     }
   }
