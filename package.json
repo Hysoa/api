@@ -6,7 +6,12 @@
   "scripts": {
     "start": "nodemon server.js",
     "prisma:migrate": "npx prisma migrate dev --schema src/v1/prisma/schemas",
-    "prisma:studio": "npx prisma studio --schema src/v1/prisma/schemas"
+    "prisma:studio": "npx prisma studio --schema src/v1/prisma/schemas",
+    "prisma:reset": "npx prisma migrate reset --schema src/v1/prisma/schemas",
+    "prisma:seed": "npx prisma db seed --schema src/v1/prisma/schemas"
+  },
+  "prisma": {
+    "seed": "node ./src/v1/prisma/seeds/index.js"
   },
   "keywords": [],
   "author": "",

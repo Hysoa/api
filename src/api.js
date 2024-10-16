@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const v1 = require("./v1");
+const Prisma = require('./v1/classes/Prisma');
 
 const corsOptions = {
   // Set the allowed origins to all domains
@@ -21,6 +22,8 @@ const api = () => {
   app.use(express.json());
   app.use(cors(corsOptions));
   app.use(v1);
+
+  Prisma.onStart();
 
   return app;
 };

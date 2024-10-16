@@ -1,7 +1,6 @@
-model clips {
+model users {
   id          String   @id @default(cuid())
-  order       Int
-  title       String
-  url         String
+  name        String
+  password    String
   lastUpdated DateTime @default(now())
 }
