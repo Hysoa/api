@@ -6,7 +6,7 @@ const Prisma = require('./v1/classes/Prisma');
 
 const corsOptions = {
   // Set the allowed origins to all domains
-  origin: new RegExp(process.env.CORSORIGIN)
+  origin: "*"
 };
 
 /* Calls API that will give different versions available */

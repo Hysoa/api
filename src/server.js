@@ -25,7 +25,9 @@ if (process.env.NODE_ENV === "production") {
     cert: ssl.cert,
   };
 
-  https.createServer(options, app).listen(process.env.HTTPSPORT);
+  https.createServer(options, app).listen(process.env.HTTPSPORT, () => {
+    console.log(`Listening on port ${process.env.HTTPSPORT}`)
+  });
 }
 
 // Unhandled Promise Rejection

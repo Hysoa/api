@@ -243,15 +243,15 @@ const allowed_countries = [
 ];
 const shipping_rates = {
   france: [
-    "shr_1Q3qGWRvDBdfTs45TbaG8ghV",
-    "shr_1Q3qGURvDBdfTs45As2ylZHc",
-    "shr_1Q3qGTRvDBdfTs45NemJYXAH",
+    "shr_1SHPjpCXgmDB6cNbFNEhn8oi",
+    "shr_1SHPqGCXgmDB6cNbXWFP57sv",
+    "shr_1SHPrLCXgmDB6cNbDSPqH3Jz",
   ],
   international: [
-    "shr_1Q3qGRRvDBdfTs45b2ZHjDvn",
-    "shr_1Q5Ws2RvDBdfTs45DmxRPZwX",
-    "shr_1Q3qGGRvDBdfTs45tLR9Zh1J",
-    "shr_1Q3qGARvDBdfTs45klm7Hnlo",
+    "shr_1SHPswCXgmDB6cNbwBq7ZHjC",
+    "shr_1SHPh8CXgmDB6cNbnY6fuTW9",
+    "shr_1SHPxOCXgmDB6cNbNxbGr8cx",
+    "shr_1SHPy2CXgmDB6cNbNEJlTPzy",
   ],
 };
 
@@ -264,9 +264,7 @@ class Checkout {
       const { album, purshaseType } = request.body;
       const albumProduct = (
         await stripe.products.search({
-          query: `metadata['slug']:'${album}-${
-            purshaseType.match("shipping") !== null ? "shipping" : "digital"
-          }'`,
+          query: `metadata['slug']:'${album}'`,
         })
       ).data[0];
       if (!albumProduct) {
@@ -306,11 +304,10 @@ class Checkout {
         }
       }
 
-
       const checkoutSession = await stripe.checkout.sessions.create(session);
       response.status(200).json({ url: checkoutSession.url });
     } catch (error) {
-      console.log('error', error)
+      console.log("error", error);
       next(error);
     }
   }
@@ -325,30 +322,29 @@ class Checkout {
           const lineItems = await stripe.checkout.sessions.listLineItems(id);
           const nextcloud = new Nextcloud();
 
-          const downloadAlbums = []
+          const downloadAlbums = [];
           for (const lineItem of lineItems.data) {
             const productId = lineItem.price.product;
             const product = await stripe.products.retrieve(productId);
-            const albumName = product.name.split("(")[0].trim()
+            const albumName = product.name.split("(")[0].trim();
             const sharedLink = await nextcloud.shareLink(
               `/Albums/${albumName}.zip`
             );
             downloadAlbums.push({
               name: albumName,
-              link: `${sharedLink}/download`
+              link: `${sharedLink}/download`,
             });
           }
 
           response.json({
             purshaseType: "digital",
-            downloadAlbums
+            downloadAlbums,
           });
         } catch (error) {
           response.json({
             purshaseType: "digital",
           });
         }
-
       } else {
         response.json({
           purshaseType: "shipping",
